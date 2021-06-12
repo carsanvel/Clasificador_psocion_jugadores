@@ -21,7 +21,6 @@ from matplotlib import pyplot as plt
 # DATA SOURCE --------------------------------------------------
 
 batch_size = 5
-print("hola")
 
 train_data_dir = './Datos_FSI/training'
 validation_data_dir = './Datos_FSI/validation'
@@ -52,13 +51,14 @@ validation_generator = validation_datagen.flow_from_directory(
 # MODEL --------------------------------------------------
 
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3),
+model.add(Conv2D(64, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=(150, 150, 3)))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Conv2D(64, (3, 3), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
+
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 
@@ -82,11 +82,17 @@ history = model.fit_generator(
         callbacks = [es]
 )   
 
+model.save("mimodelo_alternativo3.h5")
+
 plt.plot(history.history['accuracy'], label='accuracy')
 plt.plot(history.history['val_accuracy'], label='validation accuracy')
+plt.plot(history.history['loss'], label='loss')
 
 plt.title('Entrenamiento futbol')
 plt.xlabel('Épocas')
 plt.legend(loc="lower right")
 
 plt.show()
+
+# SHOW RESULTS
+
